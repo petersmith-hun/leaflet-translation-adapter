@@ -42,7 +42,7 @@ public class TranslationServiceClientImpl implements TranslationServiceClient {
     private String translationServiceUrl;
 
     @Autowired
-    public TranslationServiceClientImpl(@Value("${tms.url}") String translationServiceUrl) {
+    public TranslationServiceClientImpl(@Value("${tms.translations-url}") String translationServiceUrl) {
         this.translationServiceUrl = translationServiceUrl;
     }
 
