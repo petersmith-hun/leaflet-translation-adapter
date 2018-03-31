@@ -1,5 +1,6 @@
 package hu.psprog.leaflet.translation.adapter;
 
+import hu.psprog.leaflet.translation.adapter.conversion.TranslationPackSetToTranslationsConverter;
 import hu.psprog.leaflet.translation.adapter.domain.Translations;
 import hu.psprog.leaflet.translation.api.domain.TranslationPack;
 import hu.psprog.leaflet.translation.client.TranslationServiceClient;
@@ -8,7 +9,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
@@ -46,7 +46,7 @@ public class TMSMessageSourceTest {
     }
 
     @Mock
-    private ConversionService conversionService;
+    private TranslationPackSetToTranslationsConverter translationsConverter;
 
     @Mock
     private TranslationServiceClient translationServiceClient;
@@ -56,14 +56,14 @@ public class TMSMessageSourceTest {
     @Before
     public void setup() {
         given(translationServiceClient.retrievePacks(PACKS)).willReturn(Collections.singleton(TRANSLATION_PACK));
-        given(conversionService.convert(Collections.singleton(TRANSLATION_PACK), Translations.class)).willReturn(TRANSLATIONS);
+        given(translationsConverter.convert(Collections.singleton(TRANSLATION_PACK))).willReturn(TRANSLATIONS);
     }
 
     @Test
     public void shouldInitMessageSource() {
 
         // given
-        tmsMessageSource = new TMSMessageSource(conversionService, translationServiceClient, PACKS, Locale.ENGLISH);
+        tmsMessageSource = new TMSMessageSource(translationsConverter, translationServiceClient, PACKS, Locale.ENGLISH);
 
         // when
         tmsMessageSource.initMessageSource();
@@ -76,7 +76,7 @@ public class TMSMessageSourceTest {
     public void shouldResolveCodeWithoutForcedLocale() {
 
         // given
-        tmsMessageSource = new TMSMessageSource(conversionService, translationServiceClient, PACKS, null);
+        tmsMessageSource = new TMSMessageSource(translationsConverter, translationServiceClient, PACKS, null);
         tmsMessageSource.initMessageSource();
 
         // when
@@ -91,7 +91,7 @@ public class TMSMessageSourceTest {
     public void shouldResolveCodeWithForcedLocale() {
 
         // given
-        tmsMessageSource = new TMSMessageSource(conversionService, translationServiceClient, PACKS, Locale.ENGLISH);
+        tmsMessageSource = new TMSMessageSource(translationsConverter, translationServiceClient, PACKS, Locale.ENGLISH);
         tmsMessageSource.initMessageSource();
 
         // when
@@ -106,7 +106,7 @@ public class TMSMessageSourceTest {
     public void shouldResolveCodeWithNonExistingKey() {
 
         // given
-        tmsMessageSource = new TMSMessageSource(conversionService, translationServiceClient, PACKS, null);
+        tmsMessageSource = new TMSMessageSource(translationsConverter, translationServiceClient, PACKS, null);
         tmsMessageSource.initMessageSource();
 
         // when

@@ -1,6 +1,7 @@
 package hu.psprog.leaflet.translation.adapter;
 
 import hu.psprog.leaflet.translation.adapter.config.TMSMessageSourceCondition;
+import hu.psprog.leaflet.translation.adapter.conversion.TranslationPackSetToTranslationsConverter;
 import hu.psprog.leaflet.translation.adapter.domain.Translations;
 import hu.psprog.leaflet.translation.api.domain.TranslationPack;
 import hu.psprog.leaflet.translation.client.TranslationServiceClient;
@@ -11,7 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.support.AbstractMessageSource;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -43,16 +43,16 @@ public class TMSMessageSource extends AbstractMessageSource {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TMSMessageSource.class);
 
-    private ConversionService conversionService;
+    private TranslationPackSetToTranslationsConverter translationsConverter;
     private TranslationServiceClient translationServiceClient;
     private List<String> requiredPacks;
     private Locale forcedLocale;
     private Translations translations;
 
     @Autowired
-    public TMSMessageSource(ConversionService conversionService, TranslationServiceClient translationServiceClient,
+    public TMSMessageSource(TranslationPackSetToTranslationsConverter translationsConverter, TranslationServiceClient translationServiceClient,
                             @Value("${tms.packs}") List<String> requiredPacks, @Value("${tms.forced-locale:}") Locale forcedLocale) {
-        this.conversionService = conversionService;
+        this.translationsConverter = translationsConverter;
         this.translationServiceClient = translationServiceClient;
         this.requiredPacks = requiredPacks;
         this.forcedLocale = forcedLocale;
@@ -66,7 +66,7 @@ public class TMSMessageSource extends AbstractMessageSource {
         Set<TranslationPack> translationPacks = translationServiceClient.retrievePacks(requiredPacks);
         logRetrievedPacks(translationPacks);
 
-        translations = conversionService.convert(translationPacks, Translations.class);
+        translations = translationsConverter.convert(translationPacks);
         LOGGER.info("Loaded {} translations", translations.countTranslations());
     }
 
