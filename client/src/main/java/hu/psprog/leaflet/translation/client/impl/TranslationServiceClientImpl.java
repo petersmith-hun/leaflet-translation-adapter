@@ -10,6 +10,7 @@ import hu.psprog.leaflet.translation.client.impl.exception.TranslationPackNotFou
 import hu.psprog.leaflet.translation.client.impl.exception.TranslationPackValidationException;
 import hu.psprog.leaflet.translation.client.impl.exception.UnknownTMSException;
 import hu.psprog.leaflet.translation.client.TranslationServiceClient;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,9 @@ public class TranslationServiceClientImpl implements TranslationServiceClient {
     private static final String PATH_STATUS = PATH_PACK_ID + "/status";
     private static final String PARAMETER_PACK_ID = "packID";
     private static final String PARAMETER_PACKS = "packs";
+    private static final int HTTP_STATUS_BAD_REQUEST = 400;
+    private static final int HTTP_STATUS_NOT_FOUND = 404;
+    private static final int HTTP_STATUS_UNPROCESSABLE_ENTITY = 422;
 
     private WebTarget webTarget;
     private String translationServiceUrl;
@@ -104,7 +108,7 @@ public class TranslationServiceClientImpl implements TranslationServiceClient {
                 .path(PATH_STATUS)
                 .resolveTemplate(PARAMETER_PACK_ID, packID)
                 .request(MediaType.APPLICATION_JSON_TYPE)
-                .put(null);
+                .put(Entity.entity(StringUtils.EMPTY, MediaType.APPLICATION_JSON_TYPE));
 
         return readResponse(response, TranslationPack.class);
     }
@@ -135,14 +139,15 @@ public class TranslationServiceClientImpl implements TranslationServiceClient {
         if (response.getStatusInfo().getFamily() != Response.Status.Family.SUCCESSFUL) {
 
             TMSErrorResponse errorResponse = response.readEntity(TMSErrorResponse.class);
-            if (response.getStatusInfo() == Response.Status.NOT_FOUND) {
-                throw new TranslationPackNotFoundException(errorResponse.getMessage());
-            } else if (response.getStatusInfo() == Response.Status.CONFLICT) {
-                throw new TranslationPackCreationException(errorResponse.getMessage());
-            } else if (response.getStatusInfo() == Response.Status.BAD_REQUEST) {
-                throw new TranslationPackValidationException(errorResponse.getValidation());
-            } else {
-                throw new UnknownTMSException(errorResponse.getMessage());
+            switch (response.getStatus()) {
+                case HTTP_STATUS_NOT_FOUND:
+                    throw new TranslationPackNotFoundException(errorResponse.getMessage());
+                case HTTP_STATUS_UNPROCESSABLE_ENTITY:
+                    throw new TranslationPackCreationException(errorResponse.getMessage());
+                case HTTP_STATUS_BAD_REQUEST:
+                    throw new TranslationPackValidationException(errorResponse.getValidation());
+                default:
+                    throw new UnknownTMSException(errorResponse.getMessage());
             }
         }
     }
