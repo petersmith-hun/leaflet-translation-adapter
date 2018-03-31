@@ -11,5 +11,12 @@
 
     <artifactId>translation-message-source</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>hu.psprog.leaflet</groupId>
+            <artifactId>translation-client</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>
