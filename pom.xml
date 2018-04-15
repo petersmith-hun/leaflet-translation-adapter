@@ -6,13 +6,7 @@
 
     <groupId>hu.psprog.leaflet</groupId>
     <artifactId>leaflet-translation-adapter</artifactId>
-    <packaging>pom</packaging>
-    <version>1.0.0</version>
-    <modules>
-        <module>api</module>
-        <module>client</module>
-        <module>message-source</module>
-    </modules>
+    <version>2.0.0</version>
 
     <properties>
 
@@ -32,6 +26,7 @@
         <spring.framework.version>4.3.9.RELEASE</spring.framework.version>
 
         <!-- other versions -->
+        <leaflet.rcp.version>1.0.0</leaflet.rcp.version>
         <logback.version>1.2.3</logback.version>
         <slf4j.version>1.7.25</slf4j.version>
         <commons.lang.version>3.6</commons.lang.version>
@@ -58,6 +53,13 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
                 <version>${spring.framework.version}</version>
+            </dependency>
+
+            <!-- leaflet internal dependencies -->
+            <dependency>
+                <groupId>hu.psprog.leaflet</groupId>
+                <artifactId>tms-rest-client</artifactId>
+                <version>${leaflet.rcp.version}</version>
             </dependency>
 
             <!-- logging -->
@@ -145,6 +147,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>hu.psprog.leaflet</groupId>
+            <artifactId>tms-rest-client</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
@@ -207,7 +213,7 @@
                 <version>${jacoco-maven-plugin.version}</version>
                 <configuration>
                     <excludes>
-                        <exclude>**/api/domain/**</exclude>
+                        <exclude>**/domain/**</exclude>
                     </excludes>
                 </configuration>
                 <executions>
