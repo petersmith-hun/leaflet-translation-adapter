@@ -5,7 +5,7 @@ import hu.psprog.leaflet.translation.adapter.config.TMSMessageSourceCondition;
 import hu.psprog.leaflet.translation.adapter.conversion.TranslationPackSetToTranslationsConverter;
 import hu.psprog.leaflet.translation.adapter.domain.Translations;
 import hu.psprog.leaflet.translation.api.domain.TranslationPack;
-import hu.psprog.leaflet.translation.client.TranslationServiceClient;
+import hu.psprog.leaflet.translation.client.MessageSourceClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +30,6 @@ import java.util.Set;
  *
  * Configuration must be provided by the integrating application:
  *  - tms.enabled: enables TMS based message source
- *  - tms.host: TMS host url
- *  - tms.translations-url: translations endpoint url (currently it's /translations) with the host as prefix
  *  - tms.packs: name of the packs that the application requests on start-up
  *  - tms.forced-locale: optional, if specified, this will be used as the resolved locale for every request
  *
@@ -45,16 +43,16 @@ public class TMSMessageSource extends AbstractMessageSource {
     private static final Logger LOGGER = LoggerFactory.getLogger(TMSMessageSource.class);
 
     private TranslationPackSetToTranslationsConverter translationsConverter;
-    private TranslationServiceClient translationServiceClient;
+    private MessageSourceClient messageSourceClient;
     private List<String> requiredPacks;
     private Locale forcedLocale;
     private Translations translations;
 
     @Autowired
-    public TMSMessageSource(TranslationPackSetToTranslationsConverter translationsConverter, TranslationServiceClient translationServiceClient,
+    public TMSMessageSource(TranslationPackSetToTranslationsConverter translationsConverter, MessageSourceClient messageSourceClient,
                             @Value("${tms.packs}") List<String> requiredPacks, @Value("${tms.forced-locale:}") Locale forcedLocale) {
         this.translationsConverter = translationsConverter;
-        this.translationServiceClient = translationServiceClient;
+        this.messageSourceClient = messageSourceClient;
         this.requiredPacks = requiredPacks;
         this.forcedLocale = forcedLocale;
     }
@@ -64,7 +62,7 @@ public class TMSMessageSource extends AbstractMessageSource {
 
         LOGGER.info("Initializing TMS based message source.");
 
-        Set<TranslationPack> translationPacks = translationServiceClient.retrievePacks(requiredPacks);
+        Set<TranslationPack> translationPacks = messageSourceClient.retrievePacks(requiredPacks);
         logRetrievedPacks(translationPacks);
 
         translations = translationsConverter.convert(translationPacks);
