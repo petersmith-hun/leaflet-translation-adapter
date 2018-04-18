@@ -4,7 +4,7 @@ import hu.psprog.leaflet.bridge.client.exception.CommunicationFailureException;
 import hu.psprog.leaflet.translation.adapter.conversion.TranslationPackSetToTranslationsConverter;
 import hu.psprog.leaflet.translation.adapter.domain.Translations;
 import hu.psprog.leaflet.translation.api.domain.TranslationPack;
-import hu.psprog.leaflet.translation.client.TranslationServiceClient;
+import hu.psprog.leaflet.translation.client.MessageSourceClient;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -50,13 +50,13 @@ public class TMSMessageSourceTest {
     private TranslationPackSetToTranslationsConverter translationsConverter;
 
     @Mock
-    private TranslationServiceClient translationServiceClient;
+    private MessageSourceClient messageSourceClient;
 
     private TMSMessageSource tmsMessageSource;
 
     @Before
     public void setup() throws CommunicationFailureException {
-        given(translationServiceClient.retrievePacks(PACKS)).willReturn(Collections.singleton(TRANSLATION_PACK));
+        given(messageSourceClient.retrievePacks(PACKS)).willReturn(Collections.singleton(TRANSLATION_PACK));
         given(translationsConverter.convert(Collections.singleton(TRANSLATION_PACK))).willReturn(TRANSLATIONS);
     }
 
@@ -64,7 +64,7 @@ public class TMSMessageSourceTest {
     public void shouldInitMessageSource() throws CommunicationFailureException {
 
         // given
-        tmsMessageSource = new TMSMessageSource(translationsConverter, translationServiceClient, PACKS, Locale.ENGLISH);
+        tmsMessageSource = new TMSMessageSource(translationsConverter, messageSourceClient, PACKS, Locale.ENGLISH);
 
         // when
         tmsMessageSource.initMessageSource();
@@ -77,7 +77,7 @@ public class TMSMessageSourceTest {
     public void shouldResolveCodeWithoutForcedLocale() throws CommunicationFailureException {
 
         // given
-        tmsMessageSource = new TMSMessageSource(translationsConverter, translationServiceClient, PACKS, null);
+        tmsMessageSource = new TMSMessageSource(translationsConverter, messageSourceClient, PACKS, null);
         tmsMessageSource.initMessageSource();
 
         // when
@@ -92,7 +92,7 @@ public class TMSMessageSourceTest {
     public void shouldResolveCodeWithForcedLocale() throws CommunicationFailureException {
 
         // given
-        tmsMessageSource = new TMSMessageSource(translationsConverter, translationServiceClient, PACKS, Locale.ENGLISH);
+        tmsMessageSource = new TMSMessageSource(translationsConverter, messageSourceClient, PACKS, Locale.ENGLISH);
         tmsMessageSource.initMessageSource();
 
         // when
@@ -107,7 +107,7 @@ public class TMSMessageSourceTest {
     public void shouldResolveCodeWithNonExistingKey() throws CommunicationFailureException {
 
         // given
-        tmsMessageSource = new TMSMessageSource(translationsConverter, translationServiceClient, PACKS, null);
+        tmsMessageSource = new TMSMessageSource(translationsConverter, messageSourceClient, PACKS, null);
         tmsMessageSource.initMessageSource();
 
         // when
