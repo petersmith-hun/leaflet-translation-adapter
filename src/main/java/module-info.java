@@ -8,4 +8,5 @@ module leaflet.translation.adapter {
     requires spring.beans;
     requires spring.context;
     requires spring.core;
+    requires spring.boot.autoconfigure;
 }

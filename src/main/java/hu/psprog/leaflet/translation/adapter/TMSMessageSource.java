@@ -1,7 +1,6 @@
 package hu.psprog.leaflet.translation.adapter;
 
 import hu.psprog.leaflet.bridge.client.exception.CommunicationFailureException;
-import hu.psprog.leaflet.translation.adapter.config.TMSMessageSourceCondition;
 import hu.psprog.leaflet.translation.adapter.conversion.TranslationPackSetToTranslationsConverter;
 import hu.psprog.leaflet.translation.adapter.domain.Translations;
 import hu.psprog.leaflet.translation.api.domain.TranslationPack;
@@ -10,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Conditional;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.support.AbstractMessageSource;
 import org.springframework.stereotype.Component;
@@ -36,7 +35,7 @@ import java.util.Set;
  * @author Peter Smith
  */
 @Primary
-@Conditional(TMSMessageSourceCondition.class)
+@ConditionalOnProperty(value = "tms.enabled", havingValue = "true")
 @Component("messageSource")
 public class TMSMessageSource extends AbstractMessageSource {
 
