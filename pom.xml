@@ -22,8 +22,8 @@
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm z</maven.build.timestamp.format>
 
         <!-- Spring versions -->
-        <spring.boot.version>2.1.0.RELEASE</spring.boot.version>
-        <spring.framework.version>5.1.2.RELEASE</spring.framework.version>
+        <spring.boot.version>2.1.1.RELEASE</spring.boot.version>
+        <spring.framework.version>5.1.3.RELEASE</spring.framework.version>
 
         <!-- other versions -->
         <leaflet.rcp.version>1.3.0</leaflet.rcp.version>
@@ -34,6 +34,7 @@
         <hibernate.validator.version>6.0.13.Final</hibernate.validator.version>
         <jersey.version>2.27</jersey.version>
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
+        <javax.annotation-api.version>1.3.2</javax.annotation-api.version>
 
         <!-- test framework versions -->
         <junit.version>4.12</junit.version>
@@ -111,6 +112,11 @@
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-annotations</artifactId>
                 <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.annotation</groupId>
+                <artifactId>javax.annotation-api</artifactId>
+                <version>${javax.annotation-api.version}</version>
             </dependency>
 
             <!-- test dependencies -->

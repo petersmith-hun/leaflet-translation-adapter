@@ -1,4 +1,4 @@
-module leaflet.translation.adapter {
+open module leaflet.component.tms.adapter {
     requires java.annotation;
     requires java.compiler;
     requires leaflet.component.bridge.api;
