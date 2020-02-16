@@ -4,7 +4,7 @@ open module leaflet.component.tms.adapter {
     requires leaflet.component.bridge.api;
     requires leaflet.component.rest.tms.api;
     requires leaflet.component.rest.tms.client;
-    requires slf4j.api;
+    requires org.slf4j;
     requires spring.beans;
     requires spring.context;
     requires spring.core;
