@@ -5,11 +5,11 @@ import hu.psprog.leaflet.translation.adapter.conversion.TranslationPackSetToTran
 import hu.psprog.leaflet.translation.adapter.domain.Translations;
 import hu.psprog.leaflet.translation.api.domain.TranslationPack;
 import hu.psprog.leaflet.translation.client.MessageSourceClient;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
@@ -29,7 +29,7 @@ import static org.mockito.BDDMockito.given;
  *
  * @author Peter Smith
  */
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class TMSMessageSourceTest {
 
     private static final String PACK_NAME = "pack1";
@@ -54,7 +54,7 @@ public class TMSMessageSourceTest {
 
     private TMSMessageSource tmsMessageSource;
 
-    @Before
+    @BeforeEach
     public void setup() throws CommunicationFailureException {
         given(messageSourceClient.retrievePacks(PACKS)).willReturn(Collections.singleton(TRANSLATION_PACK));
         given(translationsConverter.convert(Collections.singleton(TRANSLATION_PACK))).willReturn(TRANSLATIONS);
