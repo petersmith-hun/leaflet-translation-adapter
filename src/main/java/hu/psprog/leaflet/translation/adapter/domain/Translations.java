@@ -14,7 +14,7 @@ import java.util.TreeMap;
  */
 public class Translations {
 
-    private Map<String, Map<Locale, String>> translations;
+    private final Map<String, Map<Locale, String>> translations;
 
     public Translations() {
         translations = new TreeMap<>();

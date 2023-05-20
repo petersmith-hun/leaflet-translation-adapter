@@ -14,7 +14,8 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.context.support.AbstractMessageSource;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
+
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Locale;
@@ -25,12 +26,12 @@ import java.util.Set;
  * {@link AbstractMessageSource} implementation to handle TMS based translations.
  * This message source is initialized by calling TMS with a list of translation pack names to retrieve for the application.
  * The list of translation pack names must be provided by the application.
- * After retrieving the available translation packs, every definitions are loaded to the message source.
+ * After retrieving the available translation packs, every definition is loaded to the message source.
  *
  * Configuration must be provided by the integrating application:
- *  - tms.enabled: enables TMS based message source
- *  - tms.packs: name of the packs that the application requests on start-up
- *  - tms.forced-locale: optional, if specified, this will be used as the resolved locale for every request
+ * - tms.enabled: enables TMS based message source
+ * - tms.packs: name of the packs that the application requests on start-up
+ * - tms.forced-locale: optional, if specified, this will be used as the resolved locale for every request
  *
  * @author Peter Smith
  */
@@ -41,10 +42,10 @@ public class TMSMessageSource extends AbstractMessageSource {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TMSMessageSource.class);
 
-    private TranslationPackSetToTranslationsConverter translationsConverter;
-    private MessageSourceClient messageSourceClient;
-    private List<String> requiredPacks;
-    private Locale forcedLocale;
+    private final TranslationPackSetToTranslationsConverter translationsConverter;
+    private final MessageSourceClient messageSourceClient;
+    private final List<String> requiredPacks;
+    private final Locale forcedLocale;
     private Translations translations;
 
     @Autowired
@@ -81,6 +82,6 @@ public class TMSMessageSource extends AbstractMessageSource {
 
     private void logRetrievedPacks(Set<TranslationPack> translationPacks) {
         translationPacks.forEach(translationPack -> LOGGER.info("Retrieved translation pack [{}-{} (created at {})]",
-                translationPack.getPackName(), translationPack.getLocale(), translationPack.getCreated()));
+                translationPack.packName(), translationPack.locale(), translationPack.created()));
     }
 }
