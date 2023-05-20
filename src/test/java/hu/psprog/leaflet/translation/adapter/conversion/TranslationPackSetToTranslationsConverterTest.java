@@ -46,11 +46,11 @@ public class TranslationPackSetToTranslationsConverterTest {
             .withKey(KEY_2)
             .withValue(VALUE_2_CA)
             .build();
-    private static final TranslationPack TRANSLATION_PACK_1 = TranslationPack.getPackBuilder()
+    private static final TranslationPack TRANSLATION_PACK_1 = TranslationPack.getBuilder()
             .withLocale(Locale.ENGLISH)
             .withDefinitions(Arrays.asList(TRANSLATION_DEFINITION_EN_1, TRANSLATION_DEFINITION_EN_2))
             .build();
-    private static final TranslationPack TRANSLATION_PACK_2 = TranslationPack.getPackBuilder()
+    private static final TranslationPack TRANSLATION_PACK_2 = TranslationPack.getBuilder()
             .withLocale(Locale.CANADA)
             .withDefinitions(Arrays.asList(TRANSLATION_DEFINITION_CA_1, TRANSLATION_DEFINITION_CA_2))
             .build();

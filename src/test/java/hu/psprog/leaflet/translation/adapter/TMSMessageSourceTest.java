@@ -34,7 +34,7 @@ public class TMSMessageSourceTest {
 
     private static final String PACK_NAME = "pack1";
     private static final List<String> PACKS = Collections.singletonList(PACK_NAME);
-    private static final TranslationPack TRANSLATION_PACK = TranslationPack.getPackBuilder()
+    private static final TranslationPack TRANSLATION_PACK = TranslationPack.getBuilder()
             .withPackName(PACK_NAME)
             .withLocale(Locale.ENGLISH)
             .withCreated(new Date())

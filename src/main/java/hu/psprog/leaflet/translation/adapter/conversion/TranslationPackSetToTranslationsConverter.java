@@ -20,8 +20,8 @@ public class TranslationPackSetToTranslationsConverter implements Converter<Set<
 
         Translations translations = new Translations();
 
-        source.forEach(translationPack -> translationPack.getDefinitions()
-                .forEach(definition -> translations.addTranslation(definition.getKey(), translationPack.getLocale(), definition.getValue())));
+        source.forEach(translationPack -> translationPack.definitions()
+                .forEach(definition -> translations.addTranslation(definition.key(), translationPack.locale(), definition.value())));
 
         return translations;
     }
