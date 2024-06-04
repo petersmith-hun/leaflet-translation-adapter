@@ -1,10 +1,13 @@
 version: 2.1
+
 orbs:
-  jira: circleci/jira@1.3.1
+  jira: circleci/jira@2.1.0
+  jq: circleci/jq@3.0.0
+
 jobs:
   build_leaflet-translation-adapter:
     docker:
-      - image: cimg/openjdk:17.0
+      - image: cimg/openjdk:21.0
     steps:
       - checkout
       - run:
@@ -12,6 +15,7 @@ jobs:
           name: Build and upload to Leaflet Internal repository
       - store_test_results:
           path: target/surefire-reports
+
 workflows:
   build:
     jobs:
@@ -23,6 +27,7 @@ workflows:
                - master
          post-steps:
            - jira/notify:
-               environment_type: production
-               job_type: build
-  version: 2.1
+               pipeline_id: << pipeline.id >>
+               pipeline_number: << pipeline.number >>
+
+  version: 2
