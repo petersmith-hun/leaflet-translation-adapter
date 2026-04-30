@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.Locale;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
@@ -65,6 +66,7 @@ public class TranslationPackSetToTranslationsConverterTest {
         Translations result = converter.convert(new HashSet<>(Arrays.asList(TRANSLATION_PACK_1, TRANSLATION_PACK_2)));
 
         // then
+        assertThat(result, notNullValue());
         assertThat(result.countTranslations(), equalTo(4L));
         assertThat(result.getTranslation(KEY_1, Locale.CANADA), equalTo(VALUE_1_CA));
         assertThat(result.getTranslation(KEY_1, Locale.ENGLISH), equalTo(VALUE_1_EN));
